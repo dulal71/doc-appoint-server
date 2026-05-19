@@ -64,6 +64,49 @@ const userId=req.params.id
   
 })
 
+//delete appoint
+
+app.delete('/appointmentDoctors/:id',async(req,res)=>{
+ try{
+  const id = req.params.id;
+  console.log(id);
+ const query={
+  _id : new ObjectId(id)
+}
+  const result= await appointmentList.deleteOne(query)
+  res.send(result)
+ } catch(error){
+   res.status(500).send({
+      success: false,
+      message: "Failed to delete booking",
+    });
+ }
+})
+
+// update appoint
+app.patch('/appointmentDoctors/:id',async(req,res)=>{
+ try{
+const updateData = req.body
+ const id = req.params.id;
+ const filter={
+  _id:new ObjectId(id)
+ }
+ const update={
+  $set:updateData
+ }
+ console.log(updateData);
+ const result=await appointmentList.updateOne(filter,update)
+res.send(result)
+ }catch(error){
+res.status(500).send({
+      success: false,
+      message: "Failed to delete booking",
+    });
+ }
+ 
+  
+})
+
 
 
 
