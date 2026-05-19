@@ -50,7 +50,18 @@ app.post('/appointmentDoctors',async(req,res)=>{
   console.log(appointmentData);
 const result = await appointmentList.insertOne(appointmentData)
 res.send(result)
-console.log('result',result);
+
+})
+
+app.get('/appointmentDoctors/:id',async(req,res)=>{
+   try{
+const userId=req.params.id
+  const result = await appointmentList.find({userId}).toArray()
+  res.send(result)
+   }catch(error){
+      res.status(500).send({ error: error.message });
+   }
+  
 })
 
 
