@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -24,12 +24,33 @@ async function run() {
 const db=client.db('doctor-appoint-data')
 const doctors=db.collection('doctors')
 const bookedDoctor = db.collection("doctorBookings")
+const appointmentList = db.collection("appointmentDoctors")
    
 //get all data 
 app.get('/doctors',async(req,res)=>{
   const cursor=await doctors.find()
   const result = await cursor.toArray()
   res.send(result)
+})
+
+// get data by id
+app.get('/doctors/:id',async(req,res)=>{
+const id = req.params.id
+console.log(id);
+const query={
+  _id : new ObjectId(id)
+}
+ const result = await doctors.findOne(query)
+  res.send(result)
+})
+
+//add appointment data 
+app.post('/appointmentDoctors',async(req,res)=>{
+  const appointmentData=req.body
+  console.log(appointmentData);
+const result = await appointmentList.insertOne(appointmentData)
+res.send(result)
+console.log('result',result);
 })
 
 
