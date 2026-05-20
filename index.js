@@ -28,9 +28,35 @@ const appointmentList = db.collection("appointmentDoctors")
    
 //get all data 
 app.get('/doctors',async(req,res)=>{
-  const cursor=await doctors.find()
+  try{
+ const search = req.query.search
+ const specialty= req.query.specialty
+  console.log(search);
+  console.log(specialty);
+  let query={}
+  if(search || specialty){
+query.$or=[];
+if(search){
+   query.$or.push({
+      name: { $regex: search, $options: "i" }
+    });
+}
+ if (specialty) {
+    query.$or.push({
+      specialty: { $regex: specialty, $options: "i" }
+    });
+  }
+  }
+   const cursor=await doctors.find(query)
   const result = await cursor.toArray()
   res.send(result)
+  }catch(error){
+res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+ 
 })
 
 // get data by id
