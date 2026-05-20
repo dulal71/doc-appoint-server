@@ -59,6 +59,21 @@ res.status(500).send({
  
 })
 
+// get data by rating
+app.get('/topDoctors',async(req,res)=>{
+  try{
+ const result=await doctors.find().sort({rating:-1}).limit(3).toArray()
+  
+  res.send(result)
+  }catch(error){
+res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+  
+})
+
 // get data by id
 app.get('/doctors/:id',async(req,res)=>{
 const id = req.params.id
