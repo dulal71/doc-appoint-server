@@ -29,7 +29,7 @@ const appointmentList = db.collection("appointmentDoctors")
    
 //authorization
 const JWKS=createRemoteJWKSet(
-  new URL(`${CLIENT_URL}/api/auth/jwks`)
+  new URL(`${process.env.CLIENT_URL}/api/auth/jwks`)
 )
 const authorization=async(req,res,next)=>{
   const header = req?.headers.authorization
@@ -178,7 +178,7 @@ res.status(500).send({
 
 
 
-     await client.db("admin").command({ ping: 1 });
+    //  await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     
