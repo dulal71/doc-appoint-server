@@ -2,7 +2,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const dotenv=require('dotenv')
+const dotenv=require('dotenv');
+const { createRemoteJWKSet, jwtVerify } = require('jose-cjs');
 const port =process.env.PORT || 5000
 dotenv.config()
 app.use(express.json())
@@ -26,8 +27,32 @@ const doctors=db.collection('doctors')
 const bookedDoctor = db.collection("doctorBookings")
 const appointmentList = db.collection("appointmentDoctors")
    
+//authorization
+const JWKS=createRemoteJWKSet(
+  new URL('http://localhost:3000/api/auth/jwks')
+)
+const authorization=async(req,res,next)=>{
+  const header = req?.headers.authorization
+if(!header){
+  return res.status(401).json({message:"unauthorized"})
+}
+  const token = header.split(" ")[1]
+
+if(!token){
+return res.status(401).json({message:"unauthorized"})
+}
+  try{
+const {payload}=await jwtVerify( token ,JWKS)
+console.log("payload",payload);
+next()
+  }catch(error){
+   return res.status(401).json({message:"forbidden"})  
+  }
+}
+
+
 //get all data 
-app.get('/doctors',async(req,res)=>{
+app.get('/doctors', async(req,res)=>{
   try{
  const search = req.query.search
  const specialty= req.query.specialty
@@ -75,8 +100,10 @@ res.status(500).send({
 })
 
 // get data by id
-app.get('/doctors/:id',async(req,res)=>{
+app.get('/doctors/:id',authorization, async(req,res)=>{
 const id = req.params.id
+
+console.log(token);
 console.log(id);
 const query={
   _id : new ObjectId(id)
