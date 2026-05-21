@@ -29,7 +29,7 @@ const appointmentList = db.collection("appointmentDoctors")
    
 //authorization
 const JWKS=createRemoteJWKSet(
-  new URL(`${CLIENT_UR}/api/auth/jwks`)
+  new URL(`${CLIENT_URL}/api/auth/jwks`)
 )
 const authorization=async(req,res,next)=>{
   const header = req?.headers.authorization
@@ -103,7 +103,7 @@ res.status(500).send({
 app.get('/doctors/:id', async(req,res)=>{
 const id = req.params.id
 
-console.log(token);
+
 console.log(id);
 const query={
   _id : new ObjectId(id)
