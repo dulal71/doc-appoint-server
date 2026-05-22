@@ -52,7 +52,7 @@ next()
 
 
 //get all data 
-app.get('/doctors', async(req,res)=>{
+app.get('/doctors',authorization, async(req,res)=>{
   try{
  const search = req.query.search
  const specialty= req.query.specialty
@@ -100,7 +100,7 @@ res.status(500).send({
 })
 
 // get data by id
-app.get('/doctors/:id', async(req,res)=>{
+app.get('/doctors/:id',authorization, async(req,res)=>{
 const id = req.params.id
 
 
@@ -113,7 +113,7 @@ const query={
 })
 
 //add appointment data 
-app.post('/appointmentDoctors',async(req,res)=>{
+app.post('/appointmentDoctors',authorization ,async(req,res)=>{
   const appointmentData=req.body
   console.log(appointmentData);
 const result = await appointmentList.insertOne(appointmentData)
@@ -121,7 +121,7 @@ res.send(result)
 
 })
 
-app.get('/appointmentDoctors/:id',async(req,res)=>{
+app.get('/appointmentDoctors/:id',authorization ,async(req,res)=>{
    try{
 const userId=req.params.id
   const result = await appointmentList.find({userId}).toArray()
@@ -134,7 +134,7 @@ const userId=req.params.id
 
 //delete appoint
 
-app.delete('/appointmentDoctors/:id',async(req,res)=>{
+app.delete('/appointmentDoctors/:id',authorization ,async(req,res)=>{
  try{
   const id = req.params.id;
   console.log(id);
@@ -152,7 +152,7 @@ app.delete('/appointmentDoctors/:id',async(req,res)=>{
 })
 
 // update appoint
-app.patch('/appointmentDoctors/:id',async(req,res)=>{
+app.patch('/appointmentDoctors/:id', authorization ,async(req,res)=>{
  try{
 const updateData = req.body
  const id = req.params.id;
