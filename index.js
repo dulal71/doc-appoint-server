@@ -29,7 +29,7 @@ const appointmentList = db.collection("appointmentDoctors")
    
 //author
 const JWKS=createRemoteJWKSet(
-  new URL(`http://localhost:3000/api/auth/jwks`)
+  new URL(`https://doctor-appointment-manager-six.vercel.app/api/auth/jwks`)
 )
 const authorization=async(req,res,next)=>{
   const header = req?.headers.authorization
