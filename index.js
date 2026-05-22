@@ -21,18 +21,19 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
    
-    //  await client.connect();
+     await client.connect();
 const db=client.db('doctor-appoint-data')
 const doctors=db.collection('doctors')
 const bookedDoctor = db.collection("doctorBookings")
 const appointmentList = db.collection("appointmentDoctors")
    
-//authorization
+//author
 const JWKS=createRemoteJWKSet(
-  new URL(`${process.env.CLIENT_URL}/api/auth/jwks`)
+  new URL(`http://localhost:3000/api/auth/jwks`)
 )
 const authorization=async(req,res,next)=>{
   const header = req?.headers.authorization
+  console.log(header);
 if(!header){
   return res.status(401).json({message:"unauthorized"})
 }
