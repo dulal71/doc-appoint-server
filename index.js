@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
    
-     await client.connect();
+    //  await client.connect();
 const db=client.db('doctor-appoint-data')
 const doctors=db.collection('doctors')
 const bookedDoctor = db.collection("doctorBookings")
@@ -133,7 +133,7 @@ const userId=req.params.id
   
 })
 
-//delete appoint
+//delete appointment
 
 app.delete('/appointmentDoctors/:id',authorization ,async(req,res)=>{
  try{
@@ -152,7 +152,7 @@ app.delete('/appointmentDoctors/:id',authorization ,async(req,res)=>{
  }
 })
 
-// update appoint
+// update appointment
 app.patch('/appointmentDoctors/:id', authorization ,async(req,res)=>{
  try{
 const updateData = req.body
@@ -179,7 +179,7 @@ res.status(500).send({
 
 
 
-    //  await client.db("admin").command({ ping: 1 });
+   
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     
